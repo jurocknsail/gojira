@@ -1,0 +1,66 @@
+{
+    "feature" : [
+        "Dev tasks (specific to US) including UT + code comments",
+        "IT + Pact (add US coverage in tests)",
+        "Sonar + Jacoco check/update (No issue blocker/critical, coverage follows validation strategy Validation Methods & Policies)",
+        "Fortify check",
+        "Library report on all µS",
+        "Integration in pipeline (µS)",
+        "Implement GGTS keywords",
+        "Write GGTS draft test (keyword testing)",
+        "Integration in ota-cloud/GGTS : update values.yaml etc if needed + check GGTS is passed.",
+        "Write/Update Documentation/SRS",
+        "Update Swagger Doc",
+        "Check Feature logs",
+        "Check metrics & dashboards",
+        "Local bench (New Features + Non Reg)",
+        "Resilience"
+    ],
+    "bug": [
+        "Dev tasks",
+        "IT+Pact",
+        "Sonar +Jacoco check/update",
+        "Integration pipeline",
+        "Impact GGTS use case?"
+    ],
+    "sprint": [
+        "Complete Sprint Follow up/ SHIFT",
+        "3rd party dependencies (maven)",
+        "Check OSS Licences",
+        "All build RC are passed (from Team Bounded Context)"
+    ],
+    "pi": [
+        "Nexus IQ Status : No Critical, no High. ( best case sprint 4, in any case late in the PI to be sure that all dev are done and we know all 3rd parties used in our dev)",
+        "Antivirus",
+        "T&P activities are also managed in user stories.",
+        "VRR Report for previous PI",
+        "Validation Strategy for next PI (ATDD + main transversal topics)"
+    ],
+    "study": [
+        "Write confluence page in dedicated space",
+        "Organize and Do sharing with concerned teams",
+        "Provide a list of US to implement the study outcome to the PO"
+    ],
+    "archi": [
+        "Dev tasks (specific to US) including UT + code comments",
+        "IT + Pact (add US coverage in tests)",
+        "Sonar + Jacoco check/update (No issue blocker/critical, coverage follows validation strategy Validation Methods & Policies)",
+        "Fortify check",
+        "Library report on all µS",
+        "Integration in pipeline (µS)",
+        "Implement GGTS keywords",
+        "Write GGTS draft test (keyword testing)",
+        "Integration in ota-cloud/GGTS : update values.yaml etc if needed + check GGTS is passed.",
+        "Write/Update Documentation/SRS",
+        "Update Swagger Doc",
+        "Check Feature logs",
+        "Check metrics & dashboards",
+        "Local bench (New Features + Non Reg)",
+        "Resilience",
+        "Sharing with concerned teams"
+    ],
+    "vlr": [
+        "ISRA", "SMM", "GDPR", "Nexus IQ", "T/P"
+    ]
+
+}
