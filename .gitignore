@@ -2,3 +2,4 @@ vendor/
 .idea/
 gojira.iml
 .vscode/
+*.exe

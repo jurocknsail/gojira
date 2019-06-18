@@ -1,0 +1,26 @@
+language: go
+
+go:
+  - 1.11.x
+
+go_import_path: github.com/jurocknsail/gojira
+
+env:
+  global:
+    - ARTIFACT_NAME=gojira-windows-amd64.exe
+
+before_install:
+
+install:
+- GOOS=windows GOARCH=amd64 go get -t -v ./...
+
+script:
+- GOOS=windows GOARCH=amd64 go build -o bin/$ARTIFACT_NAME
+
+deploy:
+- provider: releases
+  api_key: $GITHUB_API_KEY
+  file: bin/$ARTIFACT_NAME
+  skip_cleanup: true # Important, otherwise the build output would be purged.
+  on:
+    tags: true # The deployment happens only if the commit has a tag.
