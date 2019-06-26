@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/gemalto/gojira",
+	"ImportPath": "github.com/jurocknsail/gojira",
 	"GoVersion": "go1.11",
 	"GodepVersion": "v80",
 	"Deps": [
