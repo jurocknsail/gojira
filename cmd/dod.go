@@ -22,7 +22,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	helpers "github.com/gemalto/gojira/helpers"
+	helpers "github.com/jurocknsail/gojira/helpers"
 )
 
 var allowedDoDTypes = "feature | bug | sprint | pi | study | archi | vlr"

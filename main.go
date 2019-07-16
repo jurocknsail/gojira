@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/user"
 
-	"github.com/gemalto/gojira/cmd"
+	"github.com/jurocknsail/gojira/cmd"
 	"github.com/spf13/viper"
 )
 

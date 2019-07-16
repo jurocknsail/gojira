@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"strconv"
 
-	helpers "github.com/gemalto/gojira/helpers"
+	helpers "github.com/jurocknsail/gojira/helpers"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

@@ -11,11 +11,8 @@ env:
 
 before_install:
 
-install:
-- GOOS=windows GOARCH=amd64 go get -t -v ./...
-
 script:
-- GOOS=windows GOARCH=amd64 go build -o bin/$ARTIFACT_NAME
+- GO111MODULE=on GOOS=windows GOARCH=amd64 go build -o bin/$ARTIFACT_NAME
 
 deploy:
 - provider: releases
