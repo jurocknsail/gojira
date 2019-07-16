@@ -15,7 +15,6 @@
 package cmd
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -46,15 +45,10 @@ var dodCmd = &cobra.Command{
 		}
 		return fmt.Errorf("Invalid dod type: %s.\nDoD type should be in [ %s ]", args[0], allowedDoDTypes)
 	},
-	ValidArgs: []string{"feature", "bug", "sprint", "pi", "study", "archi", "vlr"},
-	Example:   "gojira dod [ " + allowedDoDTypes + " ] US-XXXXX,US-YYYYY,....",
+	// ValidArgs: []string{"feature", "bug", "sprint", "pi", "study", "archi", "vlr"},
+	Example: "gojira dod [ " + allowedDoDTypes + " ] US-XXXXX,US-YYYYY,....",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		data, err := Asset("resources/subtasks.json")
-
-		if err != nil {
-			// Asset was not found.
-		}
 		sprintID := viper.GetString("sprint_id")
 		username := viper.GetString("username")
 
@@ -69,10 +63,17 @@ var dodCmd = &cobra.Command{
 			for _, issue := range issuesFound {
 				if strings.Contains(usList, issue.Key) {
 					fmt.Printf(" Pushing %s DoD for US %s ", args[0], issue.Key)
-					// use asset data
-					var result map[string][]string
-					json.Unmarshal([]byte(data), &result)
-					for _, summary := range result[args[0]] {
+
+					viper.SetConfigName("dod")
+					viper.ReadInConfig()
+
+					tasks := viper.GetStringSlice(args[0])
+
+					//Restore config initial context
+					viper.SetConfigName("gojira")
+					viper.ReadInConfig()
+
+					for _, summary := range tasks {
 						helpers.CreateSubTask(jiraClient, issue.Fields.Project.Key, username, issue.Key, issue.ID, summary)
 						fmt.Printf(".")
 					}
@@ -107,11 +108,15 @@ var listCmd = &cobra.Command{
 
 		viper.SetConfigName("dod")
 		viper.ReadInConfig()
-		fmt.Printf("Configuration read from dod.yaml using viper : \n  %v \n\n", viper.AllKeys())
-		fmt.Printf("Choosen dod : %v \n", args[0])
 
-		fmt.Printf(" Subtasks : %v \n", viper.GetStringSlice(args[0]))
-
+		fmt.Printf("\n")
+		for _, dodType := range viper.AllKeys() {
+			fmt.Printf(" %s \n", dodType)
+			for _, task := range viper.GetStringSlice(dodType) {
+				fmt.Printf("  - %s \n", task)
+			}
+			fmt.Printf("\n")
+		}
 		//Restore config initial context
 		viper.SetConfigName("gojira")
 		viper.ReadInConfig()
