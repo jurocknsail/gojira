@@ -1,5 +1,8 @@
 # GoJira Release Notes
 
+## Version 1.4.0 - 17/07/2019
+* Now uses Go 1.12.
+
 ## Version 1.3.0 - 16/07/2019
 * The subtasks.json file embeded in the program is removed. Now DoD is configurable in .gojira/dod.yaml for externalisation purposes.
 
