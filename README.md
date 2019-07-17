@@ -1,7 +1,7 @@
 # GoJira
  [![Build Status](https://travis-ci.org/jurocknsail/gojira.svg?branch=master)](https://travis-ci.com/gemalto/gokube)
 
-<!--![gokube](https://gemalto.github.io/gokube/logo/gokube_150x150.png) -->
+![gojira](https://github.com/jurocknsail/gojira/blob/master/logo/gojira-logo.png)
 
 ## What is GoJira ?
 
