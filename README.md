@@ -1,5 +1,5 @@
 # GoJira
- [![Build Status](https://travis-ci.org/jurocknsail/gojira.svg?branch=master)](https://travis-ci.com/gemalto/gokube)
+ [![Build Status](https://travis-ci.org/jurocknsail/gojira.svg?branch=master)](https://travis-ci.com/jurocknsail/gojira)
 
 ![gojira](https://github.com/jurocknsail/gojira/blob/master/logo/gojira-logo_150px.png)
 
