@@ -3,3 +3,4 @@ vendor/
 gojira.iml
 .vscode/
 *.exe
+bin/
