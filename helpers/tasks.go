@@ -25,9 +25,6 @@ func CreateSubTask(jiraClient *jira.Client, jiraProject string, jiraUser string,
 
 	i := jira.Issue{
 		Fields: &jira.IssueFields{
-			Assignee: &jira.User{
-				Name: jiraUser,
-			},
 			Reporter: &jira.User{
 				Name: jiraUser,
 			},
