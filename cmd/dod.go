@@ -25,8 +25,6 @@ import (
 	helpers "github.com/jurocknsail/gojira/helpers"
 )
 
-var allowedDoDTypes = "feature | bug | sprint | pi | study | archi | vlr"
-
 func init() {
 	rootCmd.AddCommand(dodCmd)
 	dodCmd.AddCommand(listCmd)
@@ -43,10 +41,10 @@ var dodCmd = &cobra.Command{
 		if isValidDoDType(args[0]) {
 			return nil
 		}
-		return fmt.Errorf("Invalid dod type: %s.\nDoD type should be in [ %s ]", args[0], allowedDoDTypes)
+		return fmt.Errorf("Invalid dod type. Please use 'gojira dod list' to get all dods available.")
 	},
 	// ValidArgs: []string{"feature", "bug", "sprint", "pi", "study", "archi", "vlr"},
-	Example: "gojira dod [ " + allowedDoDTypes + " ] US-XXXXX,US-YYYYY,....",
+	Example: "gojira dod myDodName US-XXXXX,US-YYYYY,....",
 	Run: func(cmd *cobra.Command, args []string) {
 
 		sprintID := viper.GetString("sprint_id")
@@ -91,7 +89,17 @@ var dodCmd = &cobra.Command{
 }
 
 func isValidDoDType(dodType string) bool {
-	if strings.Contains(allowedDoDTypes, dodType) {
+
+	viper.SetConfigName("dod")
+	viper.ReadInConfig()
+	
+	allowedDoDTypes := viper.AllKeys()
+	
+	//Restore config initial context
+	viper.SetConfigName("gojira")
+	viper.ReadInConfig()
+	
+	if strings.Contains(strings.Join(allowedDoDTypes," "), dodType) {
 		return true
 	}
 	return false

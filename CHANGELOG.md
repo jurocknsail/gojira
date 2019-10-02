@@ -1,5 +1,8 @@
 # GoJira Release Notes
 
+## Version 1.5.0 - 02/10/2019
+* Fixed allowed dod types, now gotten from the yaml config
+
 ## Version 1.4.0 - 17/07/2019
 * Now uses Go 1.12.
 

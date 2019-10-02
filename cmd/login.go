@@ -143,6 +143,7 @@ func createJiraClient(jiraURL, username, password string) *jira.Client {
 
 	jiraClient, err := jira.NewClient(tp.Client(), jiraURL)
 	if err != nil {
+		fmt.Printf("Error while creating Jira Client : %s\n", err)
 		panic(err)
 	}
 
