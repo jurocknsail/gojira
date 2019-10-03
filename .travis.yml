@@ -7,7 +7,7 @@ go_import_path: github.com/jurocknsail/gojira
 
 env:
   global:
-    - ARTIFACT_NAME=gojira-windows-amd64.exe
+    - ARTIFACT_NAME=gojira.exe
 
 before_install:
 
