@@ -2,6 +2,7 @@
 
 ## Version 1.5.0 - 02/10/2019
 * Fixed allowed dod types, now gotten from the yaml config
+* No more default assignee for DoD subtasks
 
 ## Version 1.4.0 - 17/07/2019
 * Now uses Go 1.12.
