@@ -56,10 +56,20 @@ func SelectSprintListInProject(jiraClient *jira.Client, boardID int) []jira.Spri
 
 	sprints, _, _ := jiraClient.Board.GetAllSprintsWithOptions(boardID, &jira.GetAllSprintsOptions{State: "active,future"})
 
+	sprintsString :=""
+
 	for _, sprint := range sprints.Values {
 		fmt.Printf(" Sprint ID : %d : %s\n", sprint.ID, sprint.Name)
+		sprintsString = sprintsString + "," + strconv.Itoa(sprint.ID);
 	}
 
+	last := len(sprintsString)
+	if len(sprintsString) > 0 {
+		sprintsString = sprintsString[1:last]
+	}
+
+	fmt.Printf(" Sprints List : %s\n", sprintsString)
+	
 	r := bufio.NewReader(os.Stdin)
 
 	fmt.Print("Please input desired sprint IDs, comma separated: ")

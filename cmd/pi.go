@@ -56,13 +56,16 @@ var piCmd = &cobra.Command{
 					issuesFound, _ := listStoriesForSprint(client, sprintSplit[1])
 
 					totalSP := 0
+					totalStories :=0
 					for _, issue := range issuesFound {
 						customFields, _, _ := client.Issue.GetCustomFields(issue.ID)
 						storyPoints, _ := strconv.Atoi(customFields["customfield_10002"])
 						// fmt.Printf(" %-11s | %-6s | %-150s | %-3d |\n", issue.Key, issue.Fields.Type.Name, issue.Fields.Summary, storyPoints)
 						totalSP = totalSP + storyPoints
+						totalStories = totalStories +1
 					}
 
+					fmt.Printf("Total Stories in sprint : %d\n", totalStories)
 					fmt.Printf("Total SP in sprint : %d\n", totalSP)
 				}
 
