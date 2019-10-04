@@ -1,5 +1,8 @@
 # GoJira Release Notes
 
+## Version 1.5.1 - 04/10/2019
+* Added Total number of US in PI-WL stats
+
 ## Version 1.5.0 - 02/10/2019
 * Fixed allowed dod types, now gotten from the yaml config
 * No more default assignee for DoD tasks
