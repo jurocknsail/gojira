@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/andygrunwald/go-jira v1.16.0
-	github.com/danieljoos/wincred v1.2.1
+	github.com/danieljoos/wincred v1.0.2
 	github.com/fatih/structs v1.1.0
 	github.com/fsnotify/fsnotify v1.4.7
 	github.com/google/go-querystring v1.1.0
