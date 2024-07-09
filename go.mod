@@ -4,10 +4,9 @@ go 1.12
 
 require (
 	github.com/andygrunwald/go-jira v1.16.0
-	github.com/danieljoos/wincred v1.0.2
+	github.com/danieljoos/wincred v1.2.1
 	github.com/fatih/structs v1.1.0
 	github.com/fsnotify/fsnotify v1.4.7
-	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/google/go-querystring v1.1.0
 	github.com/hashicorp/hcl v1.0.0
 	github.com/howeyc/gopass v0.0.0-20170109162249-bf9dde6d0d2c
@@ -24,7 +23,7 @@ require (
 	github.com/spf13/viper v1.3.2
 	github.com/trivago/tgo v1.0.7
 	golang.org/x/crypto v0.0.0-20190426145343-a29dc8fdc734
-	golang.org/x/sys v0.0.0-20220330033206-e17cdc41300f
+	golang.org/x/sys v0.15.0
 	golang.org/x/text v0.3.2
-	gopkg.in/yaml.v2 v2.2.2
+	gopkg.in/yaml.v3 v3.0.1
 )
