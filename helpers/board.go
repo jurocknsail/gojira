@@ -25,7 +25,17 @@ import (
 )
 
 func GetBoardByName(client *jira.Client, name string) *jira.Board {
-	boards, _, _ := client.Board.GetAllBoards(&jira.BoardListOptions{Name: name})
+
+    if client == nil {
+       fmt.Println("Invalid Jira client! Please check Jira Credentials.")
+       return nil
+    }
+
+	boards, _, err := client.Board.GetAllBoards(&jira.BoardListOptions{Name: name})
+	if err != nil {
+		fmt.Printf("Failed to get boards: %v\n", err)
+		return nil
+	}
 
 	r := bufio.NewReader(os.Stdin)
 
@@ -49,8 +59,29 @@ func GetBoardByName(client *jira.Client, name string) *jira.Board {
 			return nil
 		}
 
+    } else if len(boards.Values) == 0 {
+        fmt.Printf("No boards found. Please check Project Name parameter.\n")
+        return nil
+
+    } else {
+        return &boards.Values[0]
+    }
+
+}
+
+func GetBoardById(client *jira.Client, boardID int) *jira.Board {
+
+    if client == nil {
+       fmt.Println("Invalid Jira client! Please check Jira Credentials.")
+       return nil
+    }
+
+	board, _, _ := client.Board.GetBoard(boardID)
+	if board != nil {
+        return board
 	} else {
-		return &boards.Values[0]
+	    fmt.Printf("No matching board. Please check Project Board ID parameter.\n")
+		return nil
 	}
 
 }

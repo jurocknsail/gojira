@@ -31,18 +31,32 @@ import (
 )
 
 var gojiraCredentialsName = "gojira"
+var gojiraAuthTransport = ""
 
 func init() {
 	rootCmd.AddCommand(loginCmd)
+	rootCmd.AddCommand(loginTokenCmd)
 	loginCmd.AddCommand(deleteCmd)
 }
 
 var loginCmd = &cobra.Command{
 	Use:   "login",
-	Short: "Create wincred credential to aunthenticate to a dedicated Jira Server / Project.",
-	Long:  `Create wincred credential to aunthenticate to a dedicated Jira Server / Project.`,
+	Short: "Create wincred credential to authenticate to a dedicated Jira Server / Project via Basic Authentication.",
+	Long:  `Create wincred credential to authenticate to a dedicated Jira Server / Project.via Basic Authentication.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
+		gojiraAuthTransport = "basic"
+		loginToJira()
+	},
+}
+
+var loginTokenCmd = &cobra.Command{
+	Use:   "tokenlogin",
+	Short: "Create wincred credential to authenticate to a dedicated Jira Server / Project via Bearer Token.",
+	Long:  `Create wincred credential to authenticate to a dedicated Jira Server / Project via Bearer Token.`,
+	Run: func(cmd *cobra.Command, args []string) {
+
+		gojiraAuthTransport = "bearer"
 		loginToJira()
 	},
 }
@@ -64,10 +78,17 @@ var deleteCmd = &cobra.Command{
 
 func loginToJira() *jira.Client {
 
+    var client *jira.Client
+    var username string
+
 	cred, err := wincred.GetGenericCredential(gojiraCredentialsName)
 	if err == nil {
 		// fmt.Printf("Logging as : %s\n", cred.Credential.UserName)
-		return createJiraClient(string(cred.Attributes[0].Value), cred.Credential.UserName, string(cred.CredentialBlob))
+        if len(cred.Credential.UserName) == 0 {
+            return createJiraClientToken(string(cred.Attributes[0].Value), string(cred.CredentialBlob))
+        } else {
+		    return createJiraClient(string(cred.Attributes[0].Value), cred.Credential.UserName, string(cred.CredentialBlob))
+        }
 	} else {
 		//Create the credential
 		r := bufio.NewReader(os.Stdin)
@@ -77,19 +98,26 @@ func loginToJira() *jira.Client {
 		jiraURL = strings.TrimSuffix(jiraURL, "\n")
 		jiraURL = strings.TrimSuffix(jiraURL, "\r")
 
-		fmt.Print("Jira Username: ")
-		username, _ := r.ReadString('\n')
-		username = strings.TrimSuffix(username, "\n")
-		username = strings.TrimSuffix(username, "\r")
+        if gojiraAuthTransport == "basic" {
+            fmt.Print("Jira Username: ")
+            username, _ = r.ReadString('\n')
+            username = strings.TrimSuffix(username, "\n")
+            username = strings.TrimSuffix(username, "\r")
+            fmt.Print("Jira Password: ")
+        } else{
+		    fmt.Print("Jira Personal Access Token: ")
+        }
 
-		fmt.Print("Jira Password: ")
 		password, _ := gopass.GetPasswd()
-
 		cred := wincred.NewGenericCredential(gojiraCredentialsName)
-		cred.UserName = username
 		cred.CredentialBlob = password
 
-		client := createJiraClient(jiraURL, cred.Credential.UserName, string(cred.CredentialBlob))
+        if gojiraAuthTransport == "basic" {
+            cred.UserName = username
+		    client = createJiraClient(jiraURL, cred.Credential.UserName, string(cred.CredentialBlob))
+        } else{
+		    client = createJiraClientToken(jiraURL, string(cred.CredentialBlob))
+        }
 
 		// client.Board.GetAllBoards
 
@@ -109,9 +137,12 @@ func loginToJira() *jira.Client {
 			fmt.Println(err)
 		}
 
-		viper.Set("username", username)
+        if gojiraAuthTransport == "basic" {
+		    viper.Set("username", username)
+        }
 		viper.Set("jira_url", jiraURL)
 		viper.WriteConfig()
+		fmt.Printf("Jira account was successfully logged on!")
 
 		return client
 	}
@@ -139,6 +170,34 @@ func createJiraClient(jiraURL, username, password string) *jira.Client {
 	tp := jira.BasicAuthTransport{
 		Username: strings.TrimSpace(username),
 		Password: strings.TrimSpace(password),
+	}
+
+	jiraClient, err := jira.NewClient(tp.Client(), jiraURL)
+	if err != nil {
+		fmt.Printf("Error while creating Jira Client : %s\n", err)
+		panic(err)
+	}
+
+	return jiraClient
+}
+
+func createJiraClientToken(jiraURL, password string) *jira.Client {
+
+	r := bufio.NewReader(os.Stdin)
+
+	if len(jiraURL) == 0 {
+		fmt.Print("Jira URL: ")
+		jiraURL, _ = r.ReadString('\n')
+	}
+
+	if len(password) == 0 {
+		fmt.Print("Jira Personal Access Token: ")
+		bytePassword, _ := terminal.ReadPassword(int(syscall.Stdin))
+		password = string(bytePassword)
+	}
+
+	tp := jira.BearerAuthTransport{
+		Token: strings.TrimSpace(password),
 	}
 
 	jiraClient, err := jira.NewClient(tp.Client(), jiraURL)

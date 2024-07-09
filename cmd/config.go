@@ -28,6 +28,7 @@ import (
 func init() {
 	rootCmd.AddCommand(configCmd)
 	configCmd.AddCommand(useProjectCmd)
+	configCmd.AddCommand(useProjectIdCmd)
 	configCmd.AddCommand(useSprintCmd)
 	configCmd.AddCommand(usePISprintsCmd)
 
@@ -43,7 +44,7 @@ var configCmd = &cobra.Command{
 		if readerr != nil {             // Handle errors reading the config file
 			panic(fmt.Errorf("fatal error config file: %s", readerr))
 		}
-		fmt.Printf("Current Gojira configuration : \n")
+		fmt.Printf("Current GoJira configuration : \n")
 		for _, key := range viper.AllKeys() {
 			fmt.Printf(" %s: %s\n", key, viper.GetString(key))
 		}
@@ -52,8 +53,8 @@ var configCmd = &cobra.Command{
 
 var useProjectCmd = &cobra.Command{
 	Use:   "project",
-	Short: "Create or update gojira configuration : project used.",
-	Long:  `Create or update gojira configuration : project used.`,
+	Short: "Create or update gojira configuration : project name used.",
+	Long:  `Create or update gojira configuration : project name used.`,
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) != 1 {
 			return errors.New("Requires a project name, spaces must be escaped !")
@@ -62,6 +63,21 @@ var useProjectCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		setProjectConfig(args[0])
+	},
+}
+
+var useProjectIdCmd = &cobra.Command{
+	Use:   "projectId",
+	Short: "Create or update gojira configuration : project board id used.",
+	Long:  `Create or update gojira configuration : project board id used.`,
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) != 1 {
+			return errors.New("Requires a project board id, spaces must be escaped !")
+		}
+		return nil
+	},
+	Run: func(cmd *cobra.Command, args []string) {
+		setProjectConfigByID(args[0])
 	},
 }
 
@@ -86,11 +102,34 @@ var usePISprintsCmd = &cobra.Command{
 func setProjectConfig(projectName string) {
 	board := helpers.GetBoardByName(loginToJira(), projectName)
 	if board == nil {
-		fmt.Printf("No boards found, configuration as NOT been set ...\n")
+		fmt.Printf("No boards found, configuration has NOT been set ...\n")
 	} else {
 		viper.Set("board_name", board.Name)
 		viper.Set("board_id", board.ID)
 		viper.WriteConfig()
+		fmt.Printf("Board selected! \n")
+		fmt.Printf("Board ID: %s\n", strconv.Itoa(board.ID))
+		fmt.Printf("Board Name: %s\n", board.Name)
+	}
+}
+
+func setProjectConfigByID(projectID string) {
+
+    projectBoardId, err := strconv.Atoi(projectID)
+    if err != nil {
+        fmt.Println("Error: incorrect value in projectID")
+        return
+    }
+	board := helpers.GetBoardById(loginToJira(), projectBoardId)
+	if board == nil {
+		fmt.Printf("No boards found, configuration has NOT been set ...\n")
+	} else {
+		viper.Set("board_name", board.Name)
+		viper.Set("board_id", board.ID)
+		viper.WriteConfig()
+		fmt.Printf("Board selected! \n")
+		fmt.Printf("Board ID: %s\n", strconv.Itoa(board.ID))
+		fmt.Printf("Board Name: %s\n", board.Name)
 	}
 }
 
@@ -105,11 +144,11 @@ func setSprintConfig() {
 			viper.Set("sprint_id", sprint.ID)
 			viper.WriteConfig()
 		} else {
-			fmt.Printf("No such sprint found, configuration as NOT been set ...\n")
+			fmt.Printf("No such sprint found, configuration has NOT been set ...\n")
 		}
 
 	} else {
-		fmt.Printf("Please configure a project first using 'gojira config project' command ! \n")
+		fmt.Printf("Please configure a project first using 'gojira config project' or 'gojira config projectId' commands ! \n")
 	}
 }
 
@@ -131,9 +170,9 @@ func setPISprintsConfig() {
 			viper.Set("pi_sprints", selectedSprints.String())
 			viper.WriteConfig()
 		} else {
-			fmt.Printf("No such sprints found, configuration as NOT been set ...\n")
+			fmt.Printf("No such sprints found, configuration has NOT been set ...\n")
 		}
 	} else {
-		fmt.Printf("Please configure a project first using 'gojira config project' command ! \n")
+		fmt.Printf("Please configure a project first using 'gojira config project' or 'gojira config projectId' commands ! \n")
 	}
 }
