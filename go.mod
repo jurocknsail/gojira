@@ -7,6 +7,7 @@ require (
 	github.com/danieljoos/wincred v1.0.2
 	github.com/fatih/structs v1.1.0
 	github.com/fsnotify/fsnotify v1.4.7
+	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/google/go-querystring v1.1.0
 	github.com/hashicorp/hcl v1.0.0
 	github.com/howeyc/gopass v0.0.0-20170109162249-bf9dde6d0d2c
