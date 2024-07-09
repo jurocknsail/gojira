@@ -12,7 +12,7 @@ This version of GoJira focuses on enabling Definition of Done (DoD) injection.
 
 #### Download binary
 
-* Visit the [Releases page](https://github.com/gemalto/gokube/releases/latest) to access the latest GoJira release.
+* Visit the [Releases page](https://github.com/jurocknsail/gojira/releases/latest) to access the latest GoJira release.
 * Copy the executable file to a directory included in your system's PATH
 * The executable file will be named as gojira-version-type+platform.arch.exe. For ease of use, rename it to "gojira.exe".
 
